@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  name: argocd
+  namespace: argocd
+spec:
+  rules:
+  - host: argocd.thefairweathers.ca
+    http:
+      paths:
+      - backend:
+          serviceName: argocd-server
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - argocd.thefairweathers.ca
+    secretName: argocd-ingress-cert
